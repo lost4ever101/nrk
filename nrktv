@@ -1,0 +1,15 @@
+#!/bin/sh
+[ $2 ] || {
+echo usage:
+echo $0 nrklink videofile
+exit $FAILURE
+}
+
+URL=$(curl -b NetTV2.0Speed=NetTV2.0Speed=40925 $1 | grep "embed type" | egrep -o 'src="[^"]*"' | egrep -o '[^"]*[^"]' | grep -v "src=")
+MMS=$(curl ${URL} | egrep -m 1 -o 'mms:[^"]*')
+
+echo url=${URL}
+echo mms=${MMS}
+
+mplayer -dumpfile $2 -dumpstream ${MMS}
+scriptname https://tv.nrk.no/serie/jenter/sesong/2/episode/11/avspiller
